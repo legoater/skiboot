@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Dump (MPIPL) Device Tree Binding &#8212; skiboot d365a01
+ documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../_static/documentation_options.js?v=e1fecbe9"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="System Firmware" href="firmware.html" />
+    <link rel="prev" title="ibm,opal/diagnostics device tree entries" href="diagnostics.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="firmware.html" title="System Firmware"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="diagnostics.html" title="ibm,opal/diagnostics device tree entries"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skiboot d365a01
+ documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Device Tree</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../ibm%2Copal.html" accesskey="U">ibm,opal</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Dump (MPIPL) Device Tree Binding</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="dump-mpipl-device-tree-binding">
+<span id="device-tree-ibm-opal-dump"></span><h1>Dump (MPIPL) Device Tree Binding<a class="headerlink" href="#dump-mpipl-device-tree-binding" title="Link to this heading">¶</a></h1>
+<p>See <a class="reference internal" href="../../mpipl.html#mpipl"><span class="std std-ref">MPIPL (aka FADUMP) Overview</span></a> for general MPIPL information.</p>
+<section id="dump-node">
+<h2>dump node<a class="headerlink" href="#dump-node" title="Link to this heading">¶</a></h2>
+<div class="highlight-dts notranslate"><div class="highlight"><pre><span></span><span class="nc">dump</span> <span class="p">{</span>
+        <span class="cm">/*</span>
+<span class="cm">         * Memory used by OPAL to load kernel/initrd from PNOR</span>
+<span class="cm">         * (KERNEL_LOAD_BASE &amp; INITRAMFS_LOAD_BASE). This is the</span>
+<span class="cm">         * temporary memory used by OPAL during boot. Later Linux</span>
+<span class="cm">         * kernel is free to use this memory. During MPIPL boot</span>
+<span class="cm">         * also OPAL will overwrite this memory.</span>
+<span class="cm">         *</span>
+<span class="cm">         * OPAL will advertise these memory details to kernel.</span>
+<span class="cm">         * If kernel is using these memory and needs these memory</span>
+<span class="cm">         * content for proper dump creation, then it has to reserve</span>
+<span class="cm">         * destination memory to preserve these memory ranges.</span>
+<span class="cm">         * Also kernel should pass this detail during registration.</span>
+<span class="cm">         * During MPIPL firmware will take care of preserving memory</span>
+<span class="cm">         * and post MPIPL kernel can create proper dump.</span>
+<span class="cm">         */</span>
+        <span class="nf">fw-load-area</span> <span class="o">=</span> <span class="p">&lt;</span><span class="mh">0x0</span> <span class="mh">0x20000000</span> <span class="mh">0x0</span> <span class="mh">0x8000000</span> <span class="mh">0x0</span> <span class="mh">0x28000000</span> <span class="mh">0x0</span> <span class="mh">0x8000000</span><span class="p">&gt;;</span>
+        <span class="cm">/* Compatible property */</span>
+        <span class="nf">compatible</span> <span class="o">=</span> <span class="s">&quot;ibm,opal-dump&quot;</span><span class="p">;</span>
+        <span class="nf">phandle</span> <span class="o">=</span> <span class="p">&lt;</span><span class="mh">0x98</span><span class="p">&gt;;</span>
+        <span class="cm">/*</span>
+<span class="cm">         * This property indicates that its MPIPL boot. Kernel will use OPAL API</span>
+<span class="cm">         * to retrieve metadata tags and use metadata to create dump.</span>
+<span class="cm">         */</span>
+        <span class="err">mpipl-boot</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Dump (MPIPL) Device Tree Binding</a><ul>
+<li><a class="reference internal" href="#dump-node">dump node</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="diagnostics.html"
+                          title="previous chapter">ibm,opal/diagnostics device tree entries</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="firmware.html"
+                          title="next chapter">System Firmware</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/device-tree/ibm,opal/dump.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="firmware.html" title="System Firmware"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="diagnostics.html" title="ibm,opal/diagnostics device tree entries"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">skiboot d365a01
+ documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Device Tree</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../ibm%2Copal.html" >ibm,opal</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Dump (MPIPL) Device Tree Binding</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2016-2017, IBM, others.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

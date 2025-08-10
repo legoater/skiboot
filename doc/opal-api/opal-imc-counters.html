@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>OPAL_IMC_COUNTERS_INIT &#8212; skiboot d365a01
+ documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/classic.css?v=514cf933" />
+    
+    <script src="../_static/documentation_options.js?v=e1fecbe9"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="OPAL_INT_EOI" href="opal-int-eoi-124.html" />
+    <link rel="prev" title="OPAL_I2C_REQUEST" href="opal-i2c-request-109.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="opal-int-eoi-124.html" title="OPAL_INT_EOI"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="opal-i2c-request-109.html" title="OPAL_I2C_REQUEST"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skiboot d365a01
+ documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">OPAL API Documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">OPAL_IMC_COUNTERS_INIT</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="opal-imc-counters-init">
+<span id="opal-imc-counters"></span><span id="id1"></span><h1>OPAL_IMC_COUNTERS_INIT<a class="headerlink" href="#opal-imc-counters-init" title="Link to this heading">¶</a></h1>
+<p>OPAL call interface to initialize In-memory collection
+infrastructure. Call does multiple scom writes on each
+invocation for Core/Trace IMC initialization. And for the
+Nest IMC, at this point, call is a no-op and returns
+OPAL_SUCCESS. Incase of kexec, OS driver should first
+stop the engine via OPAL_IMC_COUNTER_STOP(and then
+free the memory if allocated, for nest memory is
+mmapped). Incase of kdump, OS driver should stop
+the engine via OPAL_IMC_COUNTER_STOP.</p>
+<p>OPAL does sanity checks to detect unknown or
+unsupported IMC device type and nest units.
+check_imc_device_type() function removes
+unsupported IMC device type. disable_unavailable_units()
+removes unsupported nest units by the microcode.
+This way OPAL can lock down and advertise only
+supported device type and nest units.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">uint32_t</span> <span class="pre">type</span></code></dt><dd><p>This parameter specifies the imc counter domain.
+The value can be ‘OPAL_IMC_COUNTERS_NEST’, ‘OPAL_IMC_COUNTERS_CORE’
+or ‘OPAL_IMC_COUNTERS_TRACE’.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">addr</span></code></dt><dd><p>This parameter must have a non-zero value.
+This value must be a physical address of the core.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">cpu_pir</span></code></dt><dd><p>This parameter specifices target cpu pir</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><a class="reference internal" href="return-codes.html#opal-parameter"><span class="std std-ref">OPAL_PARAMETER</span></a></dt><dd><p>In case of  unsupported <code class="docutils literal notranslate"><span class="pre">type</span></code></p>
+</dd>
+<dt><a class="reference internal" href="return-codes.html#opal-hardware"><span class="std std-ref">OPAL_HARDWARE</span></a></dt><dd><p>If any error in setting up the hardware.</p>
+</dd>
+<dt><a class="reference internal" href="return-codes.html#opal-success"><span class="std std-ref">OPAL_SUCCESS</span></a></dt><dd><p>On succesfully initialized or even if init operation is a no-op.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="opal-imc-counters-start">
+<span id="id2"></span><h1>OPAL_IMC_COUNTERS_START<a class="headerlink" href="#opal-imc-counters-start" title="Link to this heading">¶</a></h1>
+<p>OPAL call interface for starting the In-Memory Collection
+counters for a specified domain (NEST/CORE/TRACE).</p>
+<section id="id3">
+<h2>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">uint32_t</span> <span class="pre">type</span></code></dt><dd><p>This parameter specifies the imc counter domain.
+The value can be ‘OPAL_IMC_COUNTERS_NEST’,
+‘OPAL_IMC_COUNTERS_CORE’ or ‘OPAL_IMC_COUNTERS_TRACE’.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">cpu_pir</span></code></dt><dd><p>This parameter specifices target cpu pir</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h2>Returns<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><a class="reference internal" href="return-codes.html#opal-parameter"><span class="std std-ref">OPAL_PARAMETER</span></a></dt><dd><p>In case of  Unsupported <code class="docutils literal notranslate"><span class="pre">type</span></code></p>
+</dd>
+<dt><a class="reference internal" href="return-codes.html#opal-hardware"><span class="std std-ref">OPAL_HARDWARE</span></a></dt><dd><p>If any error in setting up the hardware.</p>
+</dd>
+<dt><a class="reference internal" href="return-codes.html#opal-success"><span class="std std-ref">OPAL_SUCCESS</span></a></dt><dd><p>On successful execution of the operation for the given <code class="docutils literal notranslate"><span class="pre">type</span></code>.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="opal-imc-counters-stop">
+<span id="id5"></span><h1>OPAL_IMC_COUNTERS_STOP<a class="headerlink" href="#opal-imc-counters-stop" title="Link to this heading">¶</a></h1>
+<p>OPAL call interface for stoping In-Memory
+Collection counters for a specified domain (NEST/CORE/TRACE).
+STOP should always be called after a related START.
+While STOP <em>may</em> run successfully without an associated
+START call, this is not gaurenteed.</p>
+<section id="id6">
+<h2>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">uint32_t</span> <span class="pre">type</span></code></dt><dd><p>This parameter specifies the imc counter domain.
+The value can be ‘OPAL_IMC_COUNTERS_NEST’,
+‘OPAL_IMC_COUNTERS_CORE’ or ‘OPAL_IMC_COUNTERS_TRACE’</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">cpu_pir</span></code></dt><dd><p>This parameter specifices target cpu pir</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h2>Returns<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><a class="reference internal" href="return-codes.html#opal-parameter"><span class="std std-ref">OPAL_PARAMETER</span></a></dt><dd><p>In case of  Unsupported <code class="docutils literal notranslate"><span class="pre">type</span></code></p>
+</dd>
+<dt><a class="reference internal" href="return-codes.html#opal-hardware"><span class="std std-ref">OPAL_HARDWARE</span></a></dt><dd><p>If any error in setting up the hardware.</p>
+</dd>
+<dt><a class="reference internal" href="return-codes.html#opal-success"><span class="std std-ref">OPAL_SUCCESS</span></a></dt><dd><p>On successful execution of the operation for the given <code class="docutils literal notranslate"><span class="pre">type</span></code>.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">OPAL_IMC_COUNTERS_INIT</a><ul>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#returns">Returns</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#opal-imc-counters-start">OPAL_IMC_COUNTERS_START</a><ul>
+<li><a class="reference internal" href="#id3">Parameters</a></li>
+<li><a class="reference internal" href="#id4">Returns</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#opal-imc-counters-stop">OPAL_IMC_COUNTERS_STOP</a><ul>
+<li><a class="reference internal" href="#id6">Parameters</a></li>
+<li><a class="reference internal" href="#id7">Returns</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="opal-i2c-request-109.html"
+                          title="previous chapter">OPAL_I2C_REQUEST</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="opal-int-eoi-124.html"
+                          title="next chapter">OPAL_INT_EOI</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/opal-api/opal-imc-counters.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="opal-int-eoi-124.html" title="OPAL_INT_EOI"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="opal-i2c-request-109.html" title="OPAL_I2C_REQUEST"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">skiboot d365a01
+ documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >OPAL API Documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">OPAL_IMC_COUNTERS_INIT</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2016-2017, IBM, others.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>
